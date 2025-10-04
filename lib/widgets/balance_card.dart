@@ -22,10 +22,7 @@ class BalanceCard extends StatelessWidget{
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: successColor,
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                decoration: plusDecoration,
                 child: Text('+4,89%', style: percentStyle),
               ),
             ],

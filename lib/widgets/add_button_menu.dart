@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../styles.dart';
 
 class AddButtonsMenu extends StatelessWidget {
+    final VoidCallback onAddEntry;
     final VoidCallback onAddExpense;
-    final VoidCallback onOtherAction;
 
     const AddButtonsMenu({
         super.key,
+        required this.onAddEntry,
         required this.onAddExpense,
-        required this.onOtherAction,
     });
 
     @override
@@ -17,14 +17,14 @@ class AddButtonsMenu extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ElevatedButton(
-          onPressed: onAddExpense,
+          onPressed: onAddEntry,
           style: primaryButtonStyle, // 🔥 definito in styles.dart
-          child: const Text("Entrata"),
+          child: const Text("Entratas", style: buttonText),
         ),
         ElevatedButton(
-          onPressed: onOtherAction,
+          onPressed: onAddExpense,
           style: secondaryButtonStyle, // 🔥 definito in styles.dart
-          child: const Text("Spesa"),
+          child: const Text("Spesa", style: buttonText),
         ),
       ],
     );

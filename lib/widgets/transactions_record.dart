@@ -1,7 +1,12 @@
+import 'package:budget_app/skinStyle/transactionStyle.dart';
 import 'package:flutter/material.dart';
 import '../styles.dart';
 
 class TransRecord extends StatelessWidget{
+
+  final String transactionTitle = ('Finanziamento');
+  final String transactionDate = ('16 maggio');
+  final String transactionAmount = ('324');
 
     @override
     Widget build(BuildContext context){
@@ -18,9 +23,9 @@ class TransRecord extends StatelessWidget{
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Finanziamento Auto', style: transactionTitle),
+                      Text(transactionTitle, style: transactionTitleStyle),
                       const SizedBox(height: 0),
-                      Text('16 Maggio', style: transactionDate),
+                      Text(transactionDate, style: transactionDateStyle),
                     ],
                   ),
                   //ELEMENTO 3 RIGA
@@ -28,11 +33,8 @@ class TransRecord extends StatelessWidget{
                   Container(
                         padding:
                             const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: successColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text('324,00 € ', style: transactionAmount),
+                        decoration: entryDecoration,
+                        child: Text(transactionAmount, style: transactionAmountStyle),
                       ),
         ],
       ),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // Colori
 const Color primaryColor = Colors.blue;
 const Color successColor = Colors.green;
+const Color expenseColor = Color.fromARGB(255, 239, 103, 103);
+const Color entryColor = Color.fromARGB(255, 91, 210, 95);
 const Color backgroundColor = Color(0xFFF5F5F5);
 
 // Testi
@@ -17,37 +19,20 @@ const TextStyle appBarText = TextStyle( //APPBAR testo
   color: Colors.white
 );
 
-const TextStyle balanceTitleStyle = TextStyle( //BILANCIO TOTALE TESTO 
+
+// -------------------
+// -- BILANCIO TOTALE
+// -------------------
+const TextStyle balanceTitleStyle = TextStyle( //BILANCIO TOTALE_ TESTO 
   fontSize: 16,
   fontWeight: FontWeight.w500,
 );
-const TextStyle balanceAmountStyle = TextStyle( //BILANCIO TOTALE AMOUNT
+const TextStyle balanceAmountStyle = TextStyle( //BILANCIO TOTALE_ AMOUNT
   fontSize: 28,
   fontWeight: FontWeight.bold,
 );
 
-const TextStyle transactionTitle = TextStyle( //TITOLO transazione
-  fontSize: 16,
-  fontWeight: FontWeight.bold,
-);
-
-const TextStyle transactionDate = TextStyle( //DATA transazione
-  fontSize: 12,
-  fontWeight: FontWeight.w500,
-);
-
-const TextStyle transactionAmount = TextStyle( //DATA transazione
-  fontSize: 16,
-  color: Colors.white,
-  fontWeight: FontWeight.w500,
-);
-
-const TextStyle percentStyle = TextStyle(
-  color: Colors.white,
-);
-
-
-// Decorazioni
+// Decorazioni 
 BoxDecoration cardDecoration = BoxDecoration(
   color: Colors.white,
   borderRadius: BorderRadius.circular(16),
@@ -60,16 +45,58 @@ BoxDecoration cardDecoration = BoxDecoration(
   ],
 );
 
+BoxDecoration plusDecoration = BoxDecoration(
+  color: successColor,
+  borderRadius: BorderRadius.circular(8),
+);
+
+BoxDecoration minusDecoration = BoxDecoration(
+  color: expenseColor,
+  borderRadius: BorderRadius.circular(8),
+);
+
+
+
+const TextStyle transactionTitleS = TextStyle( //TITOLO transazione //CHECK SE CANCELLARE
+  fontSize: 16,
+  fontWeight: FontWeight.bold,
+);
+
+const TextStyle buttonText = TextStyle( //Testo Pulsante 
+  fontWeight: FontWeight.bold,
+  fontSize: 20,
+  color: Colors.white,
+);
+
+const TextStyle transactionDateS = TextStyle( //DATA transazione //CHECK SE CANCELLARE
+  fontSize: 12,
+  fontWeight: FontWeight.w500,
+);
+
+const TextStyle transactionAmountS = TextStyle( //IMPORTO transazione //CHECK SE CANCELLARE
+  fontSize: 16,
+  color: Colors.white,
+  fontWeight: FontWeight.w500,
+);
+
+const TextStyle percentStyle = TextStyle(
+  color: Colors.white,
+);
+
+
+
+// -- PULSANTI
+
 final ButtonStyle primaryButtonStyle = ElevatedButton.styleFrom(
-  backgroundColor: Colors.green,
+  backgroundColor: entryColor,
   foregroundColor: Colors.white,
-  padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 12),
-  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
+  padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 2),
+  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
 );
 
 final ButtonStyle secondaryButtonStyle = ElevatedButton.styleFrom(
-  backgroundColor: Colors.red,
+  backgroundColor: expenseColor,
   foregroundColor: Colors.white,
-  padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 12),
-  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
+  padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 2),
+  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
 );

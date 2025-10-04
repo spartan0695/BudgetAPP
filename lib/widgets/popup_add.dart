@@ -1,0 +1,168 @@
+import 'package:budget_app/styles.dart';
+import 'package:flutter/material.dart';
+import 'popup_tag.dart';
+
+void showAddEntryPopup({
+  required BuildContext context,
+  required String titolo,
+  required Color colorePrimario,
+  required String textButton,
+  required bool isEntry}) {
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (_) =>  SingleChildScrollView(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5), // margine a destra e sinistra
+    child: MovimentoPopup(
+        titolo: titolo,
+        colorePrimario: colorePrimario,
+        textButton: textButton,
+        isEntry: isEntry,
+      ),
+    ),
+  );
+}
+
+class MovimentoPopup extends StatelessWidget {
+  final String titolo;
+  final Color colorePrimario;
+  final String textButton;
+  final bool isEntry;
+
+  const MovimentoPopup({
+    required this.titolo,
+    required this.colorePrimario,
+    required this.textButton,
+    required this.isEntry,
+    super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Dati fittizi
+    const String nome = 'spesa Ricorrente';
+    const String importo = '€ 300.00';
+    const String data = '12 Maggio';
+    const bool ricorrente = true;
+    const String periodicita = 'Mensile';
+    const String scadenza = '12 Maggio 2026';
+    const String totale = '3.600,00€';
+
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 30, right: 30, top: 4, bottom: 4
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(20, 255, 255, 255),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                
+                const SizedBox(height: 10),
+                _buildField(label: 'Nome', value: nome),
+                _buildField(label: 'Importo', value: importo),
+                _buildField(label: 'Data', value: data),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Entrata Ricorrente',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    Switch(
+                      value: ricorrente,
+                      onChanged: (_) {},
+                      activeColor: Colors.green,
+                    )
+                  ],
+                ),
+
+                const SizedBox(height: 10),
+                _buildField(label: 'Periodicità', value: periodicita),
+                _buildField(label: 'Scadenza', value: scadenza),
+
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Totale',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      totale,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.green,
+                      ),
+                    )
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Conferma', style: buttonText),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+
+        // Linguetta sopra il popup
+         PopupTag(
+          text: titolo,
+          color: colorePrimario,
+          icon: isEntry ? Icons.remove : Icons.add,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildField({required String label, required String value}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 4),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 238, 238, 238),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          width: double.infinity,
+          child: Text(value),
+        ),
+        const SizedBox(height: 12),
+      ],
+    );
+  }
+}
