@@ -19,7 +19,7 @@ class AddButtonsMenu extends StatelessWidget {
         ElevatedButton(
           onPressed: onAddEntry,
           style: primaryButtonStyle, // 🔥 definito in styles.dart
-          child: const Text("Entratas", style: buttonText),
+          child: const Text("Entratdfds", style: buttonText),
         ),
         ElevatedButton(
           onPressed: onAddExpense,

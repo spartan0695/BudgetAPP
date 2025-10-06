@@ -1,6 +1,8 @@
 import 'package:budget_app/styles.dart';
 import 'package:flutter/material.dart';
 import 'popup_tag.dart';
+import '../skinStyle/styledTextField.dart';
+import '../skinStyle/displayField.dart';
 
 void showAddEntryPopup({
   required BuildContext context,
@@ -43,7 +45,7 @@ class MovimentoPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Dati fittizi
-    const String nome = 'spesa Ricorrente';
+    const String nome = 'spesa';
     const String importo = '€ 300.00';
     const String data = '12 Maggio';
     const bool ricorrente = true;
@@ -69,7 +71,8 @@ class MovimentoPopup extends StatelessWidget {
               children: [
                 
                 const SizedBox(height: 10),
-                _buildField(label: 'Nome', value: nome),
+                //_buildField(label: 'Nome', value: nome),
+                DisplayField(label: nome, value: nome),
                 _buildField(label: 'Importo', value: importo),
                 _buildField(label: 'Data', value: data),
 
