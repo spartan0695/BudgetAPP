@@ -14,10 +14,13 @@ import 'statistics_page.dart';
 import 'notificationsSetup_page.dart';
 import 'settings_page.dart';
 import 'balance_page.dart';
+import 'premium_page.dart';
+import 'services/premium_service.dart';
 
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await PremiumService().init();
   runApp(const MyApp());
 }
 
@@ -26,12 +29,17 @@ class MyApp extends StatelessWidget {
   @override  // This widget is the root of your application.
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/': (context) => const MyHomePage(title: 'Budget Home App'),
+        '/premium': (context) => PremiumPage(),
+        // '/advanced': ... la tua pagina avanzata
+      },
       title: 'Flutter Demo',
       theme: ThemeData(
         textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme,),
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 241, 241, 241)),
       ),
-      home: const MyHomePage(title: 'Budget Home App'),
+      //home: const MyHomePage(title: 'Budget Home App'),
     );
   }
 }

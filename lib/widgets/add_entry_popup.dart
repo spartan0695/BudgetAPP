@@ -161,23 +161,3 @@ class AddEntryPopup extends StatelessWidget {
     );
   }
 }
-
-// Prima di aggiungere transazione ricorrente
-final premiumService = PremiumService();
-final currentRecurringCount = await getRecurringTransactionsCount();
-
-if (!premiumService.isPremium && currentRecurringCount >= 3) {
-  // Mostra paywall
-  showDialog(
-    context: context,
-    builder: (context) => PaywallDialog(
-      featureName: 'Transazioni Ricorrenti Illimitate',
-      onUpgrade: () {
-        Navigator.pop(context);
-        Navigator.pushNamed(context, '/premium');
-      },
-    ),
-  );
-  return;
-}
-

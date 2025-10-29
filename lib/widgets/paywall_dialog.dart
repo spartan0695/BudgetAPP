@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class PaywallDialog extends StatelessWidget {
   final String featureName;
   final VoidCallback onUpgrade;
+  final VoidCallback? onShowPremiumPage;
 
   const PaywallDialog({
     Key? key,
     required this.featureName,
     required this.onUpgrade,
+    required this.onShowPremiumPage,
   }) : super(key: key);
 
   @override

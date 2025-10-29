@@ -30,7 +30,8 @@ class BalancePage extends StatelessWidget{
             body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             BalanceCard(), // 🔥 AGGIUNTA: card bilancio totale
             const SizedBox(height: 16), // 🔥 AGGIUNTA: spazio dopo la card
@@ -50,15 +51,19 @@ class BalancePage extends StatelessWidget{
             ),
             const SizedBox(height: 16), // 🔥 AGGIUNTA: spazio dopo la card
             TransRecord(),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+      children:[
               PremiumBadge(
                 isPremium: isPremium,
-                onFeatureTap: () => Navigator.pushNamed(context, '/advanced'),
-                onUpgradeRequested: () => Navigator.pushNamed(context, '/premium'),
+                onFeatureTap: null,//() => Navigator.pushNamed(context, '/advanced'),
+                onUpgradeRequested: null, // () => Navigator.pushNamed(context, '/premium'),
                 child: ElevatedButton(
                   onPressed: null, // lascialo nullo, il tap lo gestisce PremiumBadge
                   child: const Text('Funzionalità avanzata'),
                 ),
-              ),
+              )],),
 
 
 

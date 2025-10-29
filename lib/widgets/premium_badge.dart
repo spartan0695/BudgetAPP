@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:budget_app/widgets/paywall_dialog.dart';
 
 /// Widget riutilizzabile che applica un badge "PRO" sopra un child
 /// e gestisce automaticamente tap/paywall in base allo stato premium.
@@ -84,9 +85,7 @@ class PremiumBadge extends StatelessWidget {
                   FilledButton.icon(
                     onPressed: () {
                       Navigator.of(ctx).pop();
-                      // Lato chiamante puoi passare onUpgradeRequested
-                      // per portare alla PremiumPage; se non presente,
-                      // resta solo questo dialog informativo.
+                    
                     },
                     icon: const Icon(Icons.star),
                     label: const Text('Scopri Premium'),
