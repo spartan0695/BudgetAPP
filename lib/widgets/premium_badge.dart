@@ -77,7 +77,7 @@ class PremiumBadge extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       _PaywallPoint(text: 'Transazioni ricorrenti illimitate'),
-                      _PaywallPoint(text: 'Proiezioni future avanzate'),
+                      _PaywallPoint(text: 'Proiezioni future avanzgate'),
                       _PaywallPoint(text: 'Statistiche dettagliate e export'),
                     ],
                   ),

@@ -56,14 +56,25 @@ class BalancePage extends StatelessWidget{
               mainAxisAlignment: MainAxisAlignment.center,
       children:[
               PremiumBadge(
-                isPremium: isPremium,
-                onFeatureTap: null,//() => Navigator.pushNamed(context, '/advanced'),
-                onUpgradeRequested: null, // () => Navigator.pushNamed(context, '/premium'),
-                child: ElevatedButton(
-                  onPressed: null, // lascialo nullo, il tap lo gestisce PremiumBadge
-                  child: const Text('Funzionalità avanzata'),
-                ),
-              )],),
+    isPremium: isPremium,
+  onFeatureTap: () => Navigator.pushNamed(context, '/advanced'),
+  onUpgradeRequested: () {
+    showDialog(
+      context: context,
+      builder: (ctx) => PaywallDialog(
+        onShowPremiumPage: () {
+          Navigator.pushNamed(context, '/premium');
+        },
+      ),
+    );
+  },
+  child: ElevatedButton(
+    onPressed: null,
+    child: const Text('Funzionalità avanzata'),
+  ),
+)
+
+              ],),
 
 
 
