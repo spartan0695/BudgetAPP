@@ -14,12 +14,17 @@ import 'statistics_page.dart';
 import 'notificationsSetup_page.dart';
 import 'settings_page.dart';
 import 'balance_page.dart';
+import 'widgets/paywall_dialog.dart';
+import 'widgets/premium_badge.dart';
+import 'services/premium_service.dart';
 
 class BalancePage extends StatelessWidget{
     const BalancePage({super.key});
+    
 
     @override
     Widget build(BuildContext context) {
+      final isPremium = PremiumService().isPremium;
         return Scaffold(
             appBar: AppBar(),
             body: Padding(
@@ -45,6 +50,18 @@ class BalancePage extends StatelessWidget{
             ),
             const SizedBox(height: 16), // 🔥 AGGIUNTA: spazio dopo la card
             TransRecord(),
+              PremiumBadge(
+                isPremium: isPremium,
+                onFeatureTap: () => Navigator.pushNamed(context, '/advanced'),
+                onUpgradeRequested: () => Navigator.pushNamed(context, '/premium'),
+                child: ElevatedButton(
+                  onPressed: null, // lascialo nullo, il tap lo gestisce PremiumBadge
+                  child: const Text('Funzionalità avanzata'),
+                ),
+              ),
+
+
+
             const SizedBox(height: 16), // 🔥 AGGIUNTA: spazio dopo la card
             const SizedBox(height: 8),
           ],

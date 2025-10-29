@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'popup_tag.dart';
 import '../skinStyle/styledTextField.dart';
 import '../skinStyle/displayField.dart';
+import 'package:budget_app/services/premium_service.dart';
+import 'package:budget_app/widgets/paywall_dialog.dart';
 
 void showAddEntryPopupOld(BuildContext context) {
   showModalBottomSheet(
@@ -159,3 +161,23 @@ class AddEntryPopup extends StatelessWidget {
     );
   }
 }
+
+// Prima di aggiungere transazione ricorrente
+final premiumService = PremiumService();
+final currentRecurringCount = await getRecurringTransactionsCount();
+
+if (!premiumService.isPremium && currentRecurringCount >= 3) {
+  // Mostra paywall
+  showDialog(
+    context: context,
+    builder: (context) => PaywallDialog(
+      featureName: 'Transazioni Ricorrenti Illimitate',
+      onUpgrade: () {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, '/premium');
+      },
+    ),
+  );
+  return;
+}
+
