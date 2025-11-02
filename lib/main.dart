@@ -20,6 +20,7 @@ import 'package:provider/provider.dart';
 import 'providers/balance_provider.dart';
 
 
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await PremiumService().init();

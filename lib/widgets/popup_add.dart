@@ -14,24 +14,30 @@ void showAddEntryPopup({
   required bool isEntry,
 }) {
   final trxController = TransactionController();
-  showModalBottomSheet(
+
+  
+showDialog(
     context: context,
-    isScrollControlled: true,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-    ),
-    builder: (_) => SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-      child: MovimentoPopup(
-        titolo: titolo,
-        colorePrimario: colorePrimario,
-        textButton: textButton,
-        isEntry: isEntry,
-        controller: trxController,
-      ),
-    ),
+    barrierDismissible: false,
+    builder: (context) {
+      return AlertDialog(
+        contentPadding: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 1),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        content: SingleChildScrollView(
+          child: MovimentoPopup(
+            titolo: titolo,
+            colorePrimario: colorePrimario,
+            textButton: textButton,
+            isEntry: isEntry,
+            controller: trxController,
+          ),
+        ),
+      );
+    },
   );
+
 }
+
 
 class MovimentoPopup extends StatelessWidget {
   final String titolo;
@@ -53,6 +59,7 @@ class MovimentoPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       clipBehavior: Clip.none,
+      
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, top: 4, bottom: 4),

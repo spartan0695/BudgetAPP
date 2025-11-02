@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'services/subscription_service.dart';
+import 'dart:io';
 
 class PremiumPage extends StatelessWidget {
   final SubscriptionService _subscriptionService = SubscriptionService();
@@ -105,14 +106,17 @@ class PremiumPage extends StatelessWidget {
             style: TextStyle(color: Colors.grey[600]),
           ),
           SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () async {
+          ElevatedButton( onPressed: Platform.isIOS ? null : () => _subscriptionService.purchasePremium(),
+          
+          /* onPressed: () async {
               AlertDialog(
                 title: Text('Non disponibile'),
                 content: Text('Gli acquisti in-app sono temporaneamente disattivati su questa piattaforma.'),
               );
+               
               //await _subscriptionService.purchasePremium();
-            },
+            },*/ //codice funzionante solo su android
+
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.amber[700],
               padding: EdgeInsets.symmetric(horizontal: 48, vertical: 16),
