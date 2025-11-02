@@ -3,7 +3,7 @@ import '../styles.dart';
 
 
 BoxDecoration entryDecoration = BoxDecoration(
-  color: successColor,
+  color: const Color.fromARGB(255, 76, 170, 175),
   borderRadius: BorderRadius.circular(8),
 );
 

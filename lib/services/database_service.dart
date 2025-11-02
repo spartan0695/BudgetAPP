@@ -27,6 +27,7 @@ class DatabaseService {
         await db.execute('''
           CREATE TABLE transactions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
             amount REAL,
             category TEXT,
             tags TEXT,
@@ -48,6 +49,15 @@ class DatabaseService {
     final db = await database;
     return await db.insert('transactions', trx.toMap());
   }
+
+  Future<int> deleteTransaction(int id) async {
+    final db = await database;
+    return await db.delete(
+                            'transactions',
+                            where: 'id = ?',
+                            whereArgs: [id]);
+  }
+
 
   Future<List<Transactions>> getAllTransactions() async {
     final db = await database;

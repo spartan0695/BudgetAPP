@@ -18,6 +18,7 @@ class TransactionController {
   // Funzione per creare il Transaction dal form
   Transactions buildTransaction({required bool isEntry, required String categoria}) {
     return Transactions(
+      name: nomeController.text,
       amount: importo,
       category: categoria,
       tags: [],

@@ -29,13 +29,13 @@ class BalanceCard extends StatelessWidget{
                 },
                 child: const Text('Aggiorna saldo'),
               ),
-              Container(
+       /*       Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: plusDecoration,
                 child: Text('+4,89%', style: percentStyle),
               ),
-            ],
+        */    ],
           ),
           const Icon(Icons.account_balance_wallet_outlined, size: 32),
         ],

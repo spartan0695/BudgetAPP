@@ -27,4 +27,9 @@ class BalanceProvider extends ChangeNotifier {
     await DatabaseService().insertTransaction(trx);
     await loadTransactionsAndBalance();
   }
+
+  Future<void> deleteTransaction(int id) async{
+    await DatabaseService().deleteTransaction(id);
+    notifyListeners();
+  }
 }

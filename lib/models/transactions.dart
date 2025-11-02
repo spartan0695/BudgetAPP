@@ -1,5 +1,6 @@
 class Transactions {
   final int? id;
+  final String name;
   final double amount;
   final String category;
   final List<String> tags;
@@ -16,6 +17,7 @@ class Transactions {
 
   Transactions({
     this.id,
+    required this.name,
     required this.amount,
     required this.category,
     required this.tags,
@@ -33,6 +35,7 @@ class Transactions {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'name': name,
       'amount': amount,
       'category': category,
       'tags': tags.join(','), // salva come stringa separata da virgole
@@ -50,6 +53,7 @@ class Transactions {
   factory Transactions.fromMap(Map<String, dynamic> map) {
     return Transactions(
       id: map['id'],
+      name: map['name'],
       amount: map['amount'],
       category: map['category'],
       tags: map['tags'] != null
