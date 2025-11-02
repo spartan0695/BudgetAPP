@@ -7,7 +7,7 @@ import 'widgets/add_button_menu.dart';
 import 'widgets/transactions_record.dart';
 import 'widgets/balance_card.dart';
 import 'widgets/app_Bar.dart';
-import 'widgets/add_entry_popup.dart';
+import 'widgets/NOTUSEDadd_entry_popup.dart';
 import 'widgets/popup_add.dart';
 import 'widgets/footer_menu.dart';
 import 'statistics_page.dart';
@@ -56,23 +56,23 @@ class BalancePage extends StatelessWidget{
               mainAxisAlignment: MainAxisAlignment.center,
       children:[
               PremiumBadge(
-    isPremium: isPremium,
-  onFeatureTap: () => Navigator.pushNamed(context, '/advanced'),
-  onUpgradeRequested: () {
-    showDialog(
-      context: context,
-      builder: (ctx) => PaywallDialog(
-        onShowPremiumPage: () {
-          Navigator.pushNamed(context, '/premium');
-        },
-      ),
-    );
-  },
-  child: ElevatedButton(
-    onPressed: null,
-    child: const Text('Funzionalità avanzata'),
-  ),
-)
+                  isPremium: isPremium,
+                onFeatureTap: () => Navigator.pushNamed(context, '/advanced'),
+                onUpgradeRequested: () {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => PaywallDialog(
+                      onShowPremiumPage: () {
+                        Navigator.pushNamed(context, '/premium');
+                      },
+                    ),
+                  );
+                },
+                child: ElevatedButton(
+                  onPressed: null,
+                  child: const Text('Funzionalità avanzata'),
+                ),
+              )
 
               ],),
 

@@ -7,6 +7,10 @@ import '../skinStyle/displayField.dart';
 import 'package:budget_app/services/premium_service.dart';
 import 'package:budget_app/widgets/paywall_dialog.dart';
 
+//import servizio DB
+import '../models/transactions.dart';
+import '../services/database_service.dart';
+
 void showAddEntryPopupOld(BuildContext context) {
   showModalBottomSheet(
     context: context,
@@ -84,7 +88,7 @@ class AddEntryPopup extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 10),
-                _buildField(label: 'Periodicità', value: periodicita),
+                _buildField(label: 'Periodicità test', value: periodicita),
                 _buildField(label: 'Scadenza', value: scadenza),
 
                 const SizedBox(height: 20),

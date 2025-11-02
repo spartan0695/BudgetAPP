@@ -7,7 +7,7 @@ import 'widgets/add_button_menu.dart';
 import 'widgets/transactions_record.dart';
 import 'widgets/balance_card.dart';
 import 'widgets/app_Bar.dart';
-import 'widgets/add_entry_popup.dart';
+import 'widgets/NOTUSEDadd_entry_popup.dart';
 import 'widgets/popup_add.dart';
 import 'widgets/footer_menu.dart';
 import 'statistics_page.dart';
@@ -16,12 +16,22 @@ import 'settings_page.dart';
 import 'balance_page.dart';
 import 'premium_page.dart';
 import 'services/premium_service.dart';
+import 'package:provider/provider.dart';
+import 'providers/balance_provider.dart';
 
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await PremiumService().init();
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => BalanceProvider()),
+        // altri provider eventuali
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

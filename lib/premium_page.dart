@@ -107,7 +107,11 @@ class PremiumPage extends StatelessWidget {
           SizedBox(height: 24),
           ElevatedButton(
             onPressed: () async {
-              await _subscriptionService.purchasePremium();
+              AlertDialog(
+                title: Text('Non disponibile'),
+                content: Text('Gli acquisti in-app sono temporaneamente disattivati su questa piattaforma.'),
+              );
+              //await _subscriptionService.purchasePremium();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.amber[700],
