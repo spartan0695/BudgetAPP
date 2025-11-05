@@ -16,14 +16,22 @@ class TransactionController {
       double.tryParse(importoController.text.replaceAll(',', '.')) ?? 0;
 
   // Funzione per creare il Transaction dal form
-  Transactions buildTransaction({required bool isEntry, required String categoria}) {
+  Transactions buildTransaction({
+      required bool isEntry, 
+      required String categoria,
+      required DateTime date,
+      required bool isRicorrente,
+      String? periodicita,
+      DateTime? ricStart,
+      DateTime? ricEnd
+    }) {
     return Transactions(
       name: nomeController.text,
       amount: importo,
       category: categoria,
       tags: [],
       isEntry: isEntry,
-      date: DateTime.now(),
+      date: date,
       note: noteController.text,
       isRecurring: isRicorrente,
       recurringFrequency: periodicita,

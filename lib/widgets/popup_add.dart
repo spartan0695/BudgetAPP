@@ -1,45 +1,9 @@
-import 'package:budget_app/transaction_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:budget_app/styles.dart';
-import '../skinStyle/styledTextField.dart';
-import '../skinStyle/displayField.dart';
-import 'popup_tag.dart';
 import '../transaction_controller.dart';
+import '../widgets/date_picker.dart'; // importa il tuo nuovo widget
+import '../styles.dart';
 
-void showAddEntryPopup({
-  required BuildContext context,
-  required String titolo,
-  required Color colorePrimario,
-  required String textButton,
-  required bool isEntry,
-}) {
-  final trxController = TransactionController();
-
-  
-showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) {
-      return AlertDialog(
-        contentPadding: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 1),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        content: SingleChildScrollView(
-          child: MovimentoPopup(
-            titolo: titolo,
-            colorePrimario: colorePrimario,
-            textButton: textButton,
-            isEntry: isEntry,
-            controller: trxController,
-          ),
-        ),
-      );
-    },
-  );
-
-}
-
-
-class MovimentoPopup extends StatelessWidget {
+class MovimentoPopup extends StatefulWidget {
   final String titolo;
   final Color colorePrimario;
   final String textButton;
@@ -52,83 +16,139 @@ class MovimentoPopup extends StatelessWidget {
     required this.textButton,
     required this.isEntry,
     required this.controller,
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 4, bottom: 4),
-          child: Container(
-            padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(20, 255, 255, 255),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 10),
-                // es. campo nome
-                _buildTextField(controller.nomeController, 'Nome'),
-                //DisplayField(label: 'Nome', value: controller.nomeController.text),
-                // campo importo e altri campi
-                _buildTextField(controller.importoController, 'Importo'),
-                // Switch ricorrente con onChanged che modifica controller
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Entrata Ricorrente',
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                    Switch(
-                      value: controller.isRicorrente,
-                      onChanged: (val) {
-                        controller.isRicorrente = val;
-                        // qui dovresti chiamare setState se StatefulWidget
-                      },
-                      activeColor: Colors.green,
-                    )
-                  ],
-                ),
-                // Altri campi (periodicità, scadenza, etc.) usando controller
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      final trx = controller.buildTransaction(isEntry: isEntry, categoria: 'CategoriaCorrente');
-                      print('TRANSACTION DA INSERIRE: ${trx.toMap()}');
-                      await controller.addTransaction(trx);
-                      print('INSERITO IN DB');
-                      Navigator.of(context).pop();
-                      
-                      // refresh lista dove serve!
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text('Conferma', style: buttonText),
-                  ),
-                ),
-              ],
+  State<MovimentoPopup> createState() => _MovimentoPopupState();
+}
+
+void showAddEntryPopup({
+  required BuildContext context,
+  required String titolo,
+  required Color colorePrimario,
+  required String textButton,
+  required bool isEntry,
+}) {
+  final trxController = TransactionController();
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true, // fondamentale!
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (sheetContext) {
+      final bottomInset = MediaQuery.of(sheetContext).viewInsets.bottom;
+      return SafeArea(
+        child: Padding(
+          padding: EdgeInsets.only(bottom: bottomInset),
+          child: SingleChildScrollView(
+            child: MovimentoPopup(
+              titolo: titolo,
+              colorePrimario: colorePrimario,
+              textButton: textButton,
+              isEntry: isEntry,
+              controller: trxController,
             ),
           ),
         ),
-        PopupTag(
-          text: titolo,
-          color: colorePrimario,
-          icon: isEntry ? Icons.remove : Icons.add,
+      );
+    }
+  );
+}
+
+
+
+class _MovimentoPopupState extends State<MovimentoPopup> {
+  DateTime? selectedDate;
+  bool isRicorrente = false;
+  String? periodicita;
+  DateTime? ricStart;
+  DateTime? ricEnd;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 30, right: 30, top: 4, bottom: 4),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 10),
+            _buildTextField(widget.controller.nomeController, 'Nome'),
+            _buildTextField(widget.controller.importoController, 'Importo'),
+            
+            // Usa il nuovo DatePicker widget
+            DatePicker(
+              initialDate: selectedDate,
+              onDateSelected: (date) {
+                setState(() {
+                  selectedDate = date;
+                });
+              },
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Entrata Ricorrente', style: TextStyle(fontWeight: FontWeight.w500)),
+                Switch(
+                  value: isRicorrente,
+                  onChanged: (val) => setState(() => isRicorrente = val),
+                  activeColor: Colors.green,
+                )
+              ],
+            ),
+
+            if (isRicorrente) ...[
+              DropdownButtonFormField<String>(
+                value: periodicita,
+                items: ['Mensile', 'Settimanale', 'Annuale'].map(
+                  (v) => DropdownMenuItem(value: v, child: Text(v))
+                ).toList(),
+                onChanged: (val) => setState(() => periodicita = val),
+                hint: const Text('Periodicità'),
+              ),
+              DatePicker(
+                initialDate: ricStart,
+                onDateSelected: (date) => setState(() => ricStart = date),
+              ),
+              DatePicker(
+                initialDate: ricEnd,
+                onDateSelected: (date) => setState(() => ricEnd = date),
+              ),
+            ],
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  // Imposta la data scelta (singola)
+                  final trx = widget.controller.buildTransaction(
+                    isEntry: widget.isEntry,
+                    categoria: 'CategoriaCorrente',
+                    date: selectedDate ?? DateTime.now(),
+                    isRicorrente: isRicorrente,
+                    periodicita: periodicita,
+                    ricStart: ricStart,
+                    ricEnd: ricEnd,
+                  );
+
+                  print('TRANSACTION DA INSERIRE: ${trx.toMap()}');
+                  await widget.controller.addTransaction(trx);
+                  print('INSERITO IN DB');
+                  Navigator.of(context).pop();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                child: Text(widget.textButton, style: buttonText),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -136,10 +156,7 @@ class MovimentoPopup extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.w500),
-        ),
+        Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
         const SizedBox(height: 4),
         TextField(
           controller: controller,

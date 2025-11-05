@@ -3,12 +3,18 @@ import '../styles.dart';
 
 
 BoxDecoration entryDecoration = BoxDecoration(
-  color: const Color.fromARGB(255, 76, 170, 175),
+  color: containerColor,
   borderRadius: BorderRadius.circular(8),
 );
 
 const TextStyle transactionTitleStyle = TextStyle( //TITOLO transazione
   fontSize: 16,
+  fontWeight: FontWeight.bold,
+);
+
+const TextStyle transactionStatusStyle = TextStyle( //TITOLO transazione
+  fontSize: 14,
+  color: containerColor,
   fontWeight: FontWeight.bold,
 );
 
@@ -18,7 +24,7 @@ const TextStyle transactionDateStyle = TextStyle( //DATA transazione
 );
 
 const TextStyle transactionAmountStyle = TextStyle( //IMPORTO transazione
-  fontSize: 16,
+  fontSize: 14,
   color: Colors.white,
   fontWeight: FontWeight.w500,
 );

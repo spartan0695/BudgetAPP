@@ -33,10 +33,10 @@ class BalancePage extends StatelessWidget{
         return Scaffold(
             appBar: AppBar(),
             body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BalanceCard(), // 🔥 AGGIUNTA: card bilancio totale
             const SizedBox(height: 16), // 🔥 AGGIUNTA: spazio dopo la card
@@ -96,11 +96,8 @@ class BalancePage extends StatelessWidget{
                     await provider.deleteTransaction(t.id!);
                     await provider.loadTransactionsAndBalance(); // Ricarica tutto dal DB
                   },
-                  child: TransRecord(
-                    title: t.name,
-                    date: t.date,
-                    amount: t.amount,
-                    isEntry: t.isEntry,
+                  child: TransRecord(transactions: t,
+                    
                   ),
                 );
               },

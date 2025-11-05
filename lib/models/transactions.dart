@@ -31,6 +31,16 @@ class Transactions {
     this.recurringCount,
   });
 
+  String get status{
+    final now =DateTime.now();
+    if(date.isAfter(DateTime(now.year, now.month, now.day, 23, 59, 59))){
+      return isEntry ? 'In Arrivo' : 'Da Pagare';
+    } else {
+      return isEntry ? 'Ricevuto' : 'Pagato';
+    }
+       
+  }
+
   // Conversioni per il DB
   Map<String, dynamic> toMap() {
     return {

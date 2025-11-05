@@ -17,12 +17,14 @@ class TransactionsList extends StatelessWidget {
       itemCount: transactions.length,
       itemBuilder: (context, index) {
         final t = transactions[index];
-        return TransRecord(
+        
+        return TransRecord(transactions:t);
+        /*return TransRecord(
           title: t.name,
           date: t.date,
           amount: t.amount,
           isEntry: t.isEntry,
-        );
+        );*/
       },
     );
   }
@@ -30,11 +32,12 @@ class TransactionsList extends StatelessWidget {
 
 // Aggiorna anche il widget TransRecord per accettare valori veri:
 class TransRecord extends StatelessWidget {
-  final String title;
+  final Transactions transactions;
+  /*final String title;
   final DateTime date;
   final double amount;
-  final bool isEntry;
-  const TransRecord({required this.title, required this.date, required this.amount, required this.isEntry, super.key});
+  final bool isEntry;*/
+  const TransRecord({required this.transactions, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,21 +49,28 @@ class TransRecord extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(Icons.monetization_on_outlined, size: 32, color: isEntry ? Colors.green : Colors.red),
+          Icon(Icons.monetization_on_outlined, size: 32, color: transactions.isEntry ? Colors.green : Colors.red),
+
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: transactionTitleStyle),
-              Text('${date.day}/${date.month}/${date.year}', style: transactionDateStyle),
+              Text(transactions.name, style: transactionTitleStyle),
+              Text('${transactions.date.day}/${transactions.date.month}/${transactions.date.year}', style: transactionDateStyle),
             ],
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: entryDecoration,
-            child: Text(
-              (isEntry ? '+' : '-') + amount.toStringAsFixed(2),
-              style: transactionAmountStyle,
-            ),
+
+          Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: entryDecoration,
+                child: Text(
+                  (transactions.isEntry ? '+' : '-') + transactions.amount.toStringAsFixed(2),
+                  style: transactionAmountStyle,
+                ),
+              ),
+              Text(transactions.status, style: transactionStatusStyle),
+            ],
           ),
         ],
       ),

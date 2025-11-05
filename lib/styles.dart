@@ -6,6 +6,7 @@ const Color successColor = Colors.green;
 const Color expenseColor = Color.fromARGB(255, 239, 103, 103);
 const Color entryColor = Color.fromARGB(255, 91, 210, 95);
 const Color backgroundColor = Color(0xFFF5F5F5);
+const Color containerColor = Color.fromARGB(255, 60, 158, 163);
 
 // Testi
 const TextStyle headingStyle = TextStyle(
@@ -30,6 +31,16 @@ const TextStyle balanceTitleStyle = TextStyle( //BILANCIO TOTALE_ TESTO
 const TextStyle balanceAmountStyle = TextStyle( //BILANCIO TOTALE_ AMOUNT
   fontSize: 28,
   fontWeight: FontWeight.bold,
+);
+
+const TextStyle endBalanceTitleStyle = TextStyle( //BILANCIO TOTALE_ TESTO 
+  fontSize: 16,
+  fontWeight: FontWeight.w500,
+);
+const TextStyle endBalanceAmountStyle = TextStyle( //BILANCIO TOTALE_ AMOUNT
+  fontSize: 26,
+  fontWeight: FontWeight.bold,
+  color: containerColor,
 );
 
 // Decorazioni 

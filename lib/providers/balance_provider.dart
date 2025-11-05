@@ -5,6 +5,13 @@ import '../services/database_service.dart';
 class BalanceProvider extends ChangeNotifier {
   double _currentBalance = 0.0;
   double get currentBalance => _currentBalance;
+  double get endMonthBalance {
+    final oggi=DateTime.now();
+    final ultimoGiornoMese=DateTime(oggi.year,oggi.month+1,0);
+    return _transactions.where((trx) => !trx.date.isAfter(ultimoGiornoMese))
+                                        .fold<double>(0.0,(acc, trx) => 
+                                          acc + (trx.isEntry ? trx.amount : -trx.amount));
+  }
 
   List<Transactions> _transactions = [];
   List<Transactions> get transactions => _transactions;
@@ -18,7 +25,6 @@ class BalanceProvider extends ChangeNotifier {
     final now = DateTime.now();
     _currentBalance = _transactions.where((trx) => !trx.date.isAfter(now))
       .fold(0.0, (acc, trx) => acc + (trx.isEntry ? trx.amount : -trx.amount));
-
     notifyListeners();
   }
 

@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'BudgetAPP', heightApp: 60),     
+      appBar: CustomAppBar(title: 'BudgetAPP', heightApp: 40),     
       body: _pages[_selectedIndex],
       bottomNavigationBar: FooterMenu(
         currentIndex: _selectedIndex,

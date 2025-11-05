@@ -19,9 +19,13 @@ class BalanceCard extends StatelessWidget{
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Bilancio Totale', style: balanceTitleStyle),
-              const SizedBox(height: 4),
+              const SizedBox(height: 2),
               Text('${balanceProvider.currentBalance.toStringAsFixed(2)} €', style: balanceAmountStyle),
-              const SizedBox(height: 4),
+              const SizedBox(height: 2),
+              Text('Proiezione a fine mese', style: balanceTitleStyle),
+              const SizedBox(height: 2),
+              Text('${balanceProvider.endMonthBalance.toStringAsFixed(2)} €', style: endBalanceAmountStyle),
+              const SizedBox(height: 2),
               ElevatedButton(
                 onPressed: () {
                   // Aggiorna (esempi: dopo inserimento, avvio pagina)
