@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/transactions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DatabaseService {
   static final DatabaseService _instance = DatabaseService._internal();
@@ -65,6 +66,15 @@ class DatabaseService {
     return List.generate(maps.length, (i) => Transactions.fromMap(maps[i]));
   }
 
-  // ... Aggiungi update e delete se ti servono
+  // Salva il saldo iniziale (puoi usare SharedPreferences o una tabella settings)
+Future<void> saveSaldoIniziale(double value) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setDouble('saldo_iniziale', value);
+}
+// Leggi il saldo iniziale
+Future<double?> getSaldoIniziale() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getDouble('saldo_iniziale');
+}// ... Aggiungi update e delete se ti servono
 }
 

@@ -45,13 +45,13 @@ class BalancePage extends StatelessWidget{
                 context: context,
                 titolo: 'Nuova Entrata',
                 colorePrimario: Colors.green,
-                textButton: 'Aggiungi Spesa',
+                textButton: 'Aggiungi Entrata',
                 isEntry: true,),
               onAddExpense: () => showAddEntryPopup(
                 context: context,
-                titolo: 'Nuova Spesa',
+                titolo: 'Nuova Uscita',
                 colorePrimario: Colors.red,
-                textButton: 'Aggiungi Spesa',
+                textButton: 'Aggiungi Uscita',
                 isEntry: false,),
             ),
             const SizedBox(height: 16), // 🔥 AGGIUNTA: spazio dopo la card

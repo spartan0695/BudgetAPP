@@ -140,7 +140,7 @@ class _MovimentoPopupState extends State<MovimentoPopup> {
                   Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
+                  backgroundColor: widget.isEntry ? Colors.green : Colors.red,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 child: Text(widget.textButton, style: buttonText),

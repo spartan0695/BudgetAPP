@@ -33,16 +33,13 @@ class TransactionsList extends StatelessWidget {
 // Aggiorna anche il widget TransRecord per accettare valori veri:
 class TransRecord extends StatelessWidget {
   final Transactions transactions;
-  /*final String title;
-  final DateTime date;
-  final double amount;
-  final bool isEntry;*/
+
   const TransRecord({required this.transactions, super.key});
 
   @override
   Widget build(BuildContext context) {
     // Puoi personalizzare la visualizzazione (ad esempio data come stringa, colore su base isEntry, ecc).
-    return Container(
+ /*   return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
       padding: const EdgeInsets.all(16),
       decoration: cardDecoration,
@@ -76,4 +73,79 @@ class TransRecord extends StatelessWidget {
       ),
     );
   }
+*/
+return Container(
+  margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+  padding: const EdgeInsets.all(10),
+  decoration: cardDecoration,
+  child: Row(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      // Icona a sinistra
+      Container(
+        margin: const EdgeInsets.only(right: 16),
+        child: Icon(
+          Icons.monetization_on_outlined,
+          size: 36,
+          color: transactions.isEntry ? Colors.green : Colors.red), // colore più neutro, come nell'immagine
+        ),
+      // Colonna titolo + data
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              transactions.name,
+              style: transactionTitleStyle, // grassetto/scuro
+            ),
+            SizedBox(height: 6),
+            Text(
+              // Data in formato "12 Maggio"
+              '${transactions.date.day} ${_meseIT(transactions.date.month)}',
+              style: transactionDateStyle, // normale
+            ),
+          ],
+        ),
+      ),
+      // Colonna importo + status (allineati a destra)
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            // Importo in verde/grassetto, prefisso + se entrata
+            (transactions.isEntry ? '+' : '-')
+              + transactions.amount.toStringAsFixed(2)
+              + ' €',
+            style: transactionAmountStyle.copyWith(
+              color: transactions.isEntry ? Colors.green : Colors.red,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          
+          Text(
+            transactions.status, // "Ricevuto"
+            style: transactionStatusStyle.copyWith(
+              fontWeight: FontWeight.normal,
+              fontSize: 18,
+            ),
+          ),
+        ],
+      ),
+    ]
+  ),
+);
+
+}
+
+// Funzione helper per convertire il numero mese in italiano:
+String _meseIT(int mese) {
+  const mesi = [
+    "", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
+    "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"
+  ];
+  return mesi[mese]; // 1-based
+}
 }
