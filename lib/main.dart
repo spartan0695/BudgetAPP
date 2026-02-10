@@ -19,7 +19,14 @@ import 'premium_page.dart';
 import 'services/premium_service.dart';
 import 'package:provider/provider.dart';
 import 'providers/balance_provider.dart';
+import 'providers/theme_provider.dart';
+import 'providers/auth_provider.dart';
+import 'styles.dart';
+import 'dark_styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:intl/date_symbol_data_local.dart';
+//import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 
 /// Funzione principale dell'app
@@ -28,6 +35,12 @@ void main() async {
   // Assicura che i binding di Flutter siano inizializzati
   // Necessario quando si usano operazioni asincrone nel main
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Inizializza Firebase
+  await Firebase.initializeApp();
+
+  // Inizializza localizzazione date
+  await initializeDateFormatting('it', null);
   
   // Ottiene l'istanza di SharedPreferences per leggere i dati salvati
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -45,7 +58,10 @@ void main() async {
       providers: [
         // Provider per gestire lo stato del saldo
         ChangeNotifierProvider(create: (_) => BalanceProvider()),
-        // Aggiungi altri provider qui se necessario
+        // Provider per gestire il tema
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        // Provider per l'autenticazione
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: MyApp(isFirstLaunch: isFirstLaunch), // Passa la flag al widget principale
     ),
@@ -60,38 +76,59 @@ class MyApp extends StatelessWidget {
   final bool isFirstLaunch;
   
   const MyApp({super.key, required this.isFirstLaunch});
-  
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Budget App',
-      
-      // Imposta il tema dell'app
-      theme: ThemeData(
-        textTheme: GoogleFonts.montserratTextTheme(
-          Theme.of(context).textTheme,
-        ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 241, 241, 241)
-        ),
-      ),
-      
-      // Definisce la route iniziale in base al primo avvio
-      // Se è il primo avvio mostra l'onboarding, altrimenti la home
-      initialRoute: isFirstLaunch ? '/onboarding' : '/',
-      
-      // Definisce tutte le route dell'app
-      routes: {
-        // Route principale - Homepage con la navigazione
-        '/': (context) => const MyHomePage(title: 'Budget Home App'),
-        
-        // Route per l'onboarding (primo avvio)
-        '/onboarding': (context) => const OnboardingScreen(),
-        
-        // Route per la pagina premium
-        '/premium': (context) => PremiumPage(),
-        
-        // Aggiungi qui altre route se necessario
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          title: 'Budget App',
+          themeMode: themeProvider.themeMode,
+          
+          // Imposta il tema Light
+          theme: ThemeData(
+            useMaterial3: true,
+            brightness: Brightness.light,
+            textTheme: GoogleFonts.montserratTextTheme(
+              Theme.of(context).textTheme,
+            ),
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 241, 241, 241),
+              brightness: Brightness.light,
+            ),
+            extensions: [lightStyles],
+          ),
+
+          // Imposta il tema Dark
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            brightness: Brightness.dark,
+            textTheme: GoogleFonts.montserratTextTheme(
+              Theme.of(context).textTheme.apply(bodyColor: Colors.white, displayColor: Colors.white),
+            ),
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blueGrey,
+              brightness: Brightness.dark,
+            ),
+            extensions: [darkStyles],
+          ),
+          
+          // Definisce la route iniziale in base al primo avvio
+          // Se è il primo avvio mostra l'onboarding, altrimenti la home
+          initialRoute: isFirstLaunch ? '/onboarding' : '/',
+          
+          // Definisce tutte le route dell'app
+          routes: {
+            // Route principale - Homepage con la navigazione
+            '/': (context) => const MyHomePage(title: 'Budget Home App'),
+            
+            // Route per l'onboarding (primo avvio)
+            '/onboarding': (context) => const OnboardingScreen(),
+            
+            // Route per la pagina premium
+            '/premium': (context) => PremiumPage(),
+          },
+        );
       },
     );
   }

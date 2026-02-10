@@ -4,6 +4,7 @@ import 'widgets/transactions_record.dart';
 import 'package:provider/provider.dart';
 import 'providers/balance_provider.dart';
 import '../models/transactions.dart';
+import 'styles.dart';
 
 class TransactionsPage extends StatefulWidget {
   const TransactionsPage({super.key});
@@ -41,138 +42,126 @@ class _TransactionsPageState extends State<TransactionsPage> {
     return filtered;
   }
 
-  @override
+    @override
   Widget build(BuildContext context) {
+    final s = appStyles(context);
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Consumer<BalanceProvider>(
       builder: (context, provider, _) {
         List<Transactions> filteredList = getFilteredList(provider.transactions);
-        final transactions = context.watch<BalanceProvider>().transactions;
-        return Column(
-          
-          children: [
-            // Riga filtri
-            Row(
-              
-              children: [
-                Expanded(
-                 child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                margin: EdgeInsets.only(right: 1),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(22),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
-                      blurRadius: 4,
-                      offset: Offset(1,2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      'Spese Ricorrenti',
-                      style: TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black
-                      ),
-                    ),
-                    SizedBox(width: 2),
-                    Switch(
-                      value: showRecurringOnly,
-                      onChanged: (v) => setState(() => showRecurringOnly = v),
-                      activeColor: Colors.cyan[700], // come nell'immagine!
-                      inactiveThumbColor: Colors.white,
-                      inactiveTrackColor: Colors.grey[300],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(22),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
-                      blurRadius: 4,
-                      offset: Offset(1,2),
-                    ),
-                  ],
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    value: dateFilter,
-                    icon: Icon(Icons.expand_more, size: 16),
-                    style: TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black
-                    ),
-                    items: [
-                      DropdownMenuItem(value: 'ultimi30', child: Text('Ultimi 30 giorni')),
-                      DropdownMenuItem(value: 'prossimi30', child: Text('Prossimi 30 giorni')),
-                      DropdownMenuItem(value: 'tutte', child: Text('Tutte')),
-                    ],
-                    onChanged: (value) => setState(() => dateFilter = value ?? 'tutte'),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-            Divider(),
-            // Lista delle transazioni filtrate
-            Expanded(
-            child: ListView.builder(
-              itemCount: transactions.length,
-              itemBuilder: (context, index) {
-                final t = transactions[index];
-
-                return Dismissible(
-                  key: ValueKey(t.id), // Usa id univoco
-                  direction: DismissDirection.endToStart, // swipe da destra a sinistra
-                  background: Container(
-                    color: const Color.fromARGB(255, 237, 102, 93), // sfondo rosso quando swipi
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: const Icon(Icons.delete, color: Colors.white),
-                  ),
-                  confirmDismiss: (direction) async {
-                    return await showDialog(
-                      context: context,
-                      builder: (ctx) => AlertDialog(
-                        title: const Text('Conferma cancellazione'),
-                        content: const Text('Vuoi cancellare questa transazione?'),
-                        actions: [
-                          TextButton(
-                            child: const Text('No'),
-                            onPressed: () => Navigator.of(ctx).pop(false),
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              // Riga filtri
+              Row(
+                children: [
+                  Expanded(
+                    flex: 6, // Diamo un po' più di spazio alla parte sinistra
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      margin: const EdgeInsets.only(right: 8),
+                      decoration: s.cardDecoration,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Expanded(
+                            child: Text(
+                              'Ricorrenti',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 13, 
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
-                          TextButton(
-                            child: const Text('Sì'),
-                            onPressed: () => Navigator.of(ctx).pop(true),
+                          Switch(
+                            value: showRecurringOnly,
+                            onChanged: (v) => setState(() => showRecurringOnly = v),
+                            activeColor: s.containerColor,
+                            inactiveThumbColor: isDark ? Colors.grey[400] : Colors.white,
                           ),
                         ],
                       ),
-                    );
-                  },
-                  onDismissed: (direction) async {
-                    // Cancella dal database
-                    final provider = Provider.of<BalanceProvider>(context, listen: false);
-                    await provider.deleteTransaction(t.id!);
-                    await provider.loadTransactionsAndBalance(); // Ricarica tutto dal DB
-                  },
-                  child: TransRecord(transactions: t,
-                    
+                    ),
                   ),
-                );
-              },
-            ),
-            ),
-
-          ],
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: s.cardDecoration,
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          value: dateFilter,
+                          icon: const Icon(Icons.expand_more, size: 16),
+                          style: TextStyle(
+                             fontSize: 13, 
+                             fontWeight: FontWeight.w400, 
+                             color: isDark ? Colors.white : Colors.black,
+                          ),
+                          dropdownColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+                          items: const [
+                            DropdownMenuItem(value: 'ultimi30', child: Text('Scorsi')),
+                            DropdownMenuItem(value: 'prossimi30', child: Text('Futuri')),
+                            DropdownMenuItem(value: 'tutte', child: Text('Tutte')),
+                          ],
+                          onChanged: (value) => setState(() => dateFilter = value ?? 'tutte'),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Divider(),
+              // Lista delle transazioni filtrate
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: filteredList.length,
+                itemBuilder: (context, index) {
+                  final t = filteredList[index];
+                  return Dismissible(
+                    key: ValueKey(t.id),
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                      color: const Color.fromARGB(255, 237, 102, 93),
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Icon(Icons.delete, color: Colors.white),
+                    ),
+                    confirmDismiss: (direction) async {
+                      return await showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text('Conferma cancellazione'),
+                          content: const Text('Vuoi cancellare questa transazione?'),
+                          actions: [
+                            TextButton(
+                              child: const Text('No'),
+                              onPressed: () => Navigator.of(ctx).pop(false),
+                            ),
+                            TextButton(
+                              child: const Text('Sì'),
+                              onPressed: () => Navigator.of(ctx).pop(true),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    onDismissed: (direction) async {
+                      final provider = Provider.of<BalanceProvider>(context, listen: false);
+                      await provider.deleteTransaction(t.id!);
+                      await provider.loadTransactionsAndBalance();
+                    },
+                    child: TransRecord(transactions: t),
+                  );
+                },
+              ),
+            ],
+          ),
         );
       },
     );

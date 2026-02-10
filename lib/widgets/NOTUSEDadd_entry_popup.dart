@@ -124,7 +124,7 @@ class AddEntryPopup extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text('Conferma', style: buttonText),
+                    child: Text('Conferma', style: appStyles(context).buttonText),
                   ),
                 )
               ],

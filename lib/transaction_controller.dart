@@ -35,11 +35,12 @@ class TransactionController {
       note: noteController.text,
       isRecurring: isRicorrente,
       recurringFrequency: periodicita,
-      recurringStart: DateTime.now(),
-      recurringEnd: scadenza,
+      recurringStart: ricStart ?? DateTime.now(), // Usa ricStart invece di DateTime.now()
+      recurringEnd: ricEnd ?? scadenza,
       // aggiungi altri campi se servono ...
     );
   }
+  
 
   // Funzione per inserire nel database
   Future<void> addTransaction(Transactions trx) async {

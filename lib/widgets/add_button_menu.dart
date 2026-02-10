@@ -13,18 +13,19 @@ class AddButtonsMenu extends StatelessWidget {
 
     @override
     Widget build(BuildContext context) {
+    final s = appStyles(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ElevatedButton(
           onPressed: onAddEntry,
-          style: primaryButtonStyle, // 🔥 definito in styles.dart
-          child: const Text("Entrata", style: buttonText),
+          style: s.primaryButtonStyle,
+          child: Text("Entrata", style: s.buttonText),
         ),
         ElevatedButton(
           onPressed: onAddExpense,
-          style: secondaryButtonStyle, // 🔥 definito in styles.dart
-          child: const Text("Uscita", style: buttonText),
+          style: s.secondaryButtonStyle,
+          child: Text("Uscita", style: s.buttonText),
         ),
       ],
     );

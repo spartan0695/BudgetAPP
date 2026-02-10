@@ -4,42 +4,39 @@ import 'package:provider/provider.dart';
 import '../providers/balance_provider.dart';
 
 class BalanceCard extends StatelessWidget{
+  const BalanceCard({super.key});
+
 
     @override
     Widget build(BuildContext context){
       final balanceProvider = Provider.of<BalanceProvider>(context);
+      final s = appStyles(context);
+      
       return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0),
       padding: const EdgeInsets.all(16),
-      decoration: cardDecoration,
+      decoration: s.cardDecoration,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Bilancio Totale', style: balanceTitleStyle),
+              Text('Bilancio Totale', style: s.balanceTitleStyle),
               const SizedBox(height: 2),
-              Text('${balanceProvider.currentBalance.toStringAsFixed(2)} €', style: balanceAmountStyle),
+              Text('${balanceProvider.currentBalance.toStringAsFixed(2)} €', style: s.balanceAmountStyle),
               const SizedBox(height: 2),
-              Text('Proiezione a fine mese', style: balanceTitleStyle),
+              Text('Proiezione a fine mese', style: s.balanceTitleStyle),
               const SizedBox(height: 2),
-              Text('${balanceProvider.endMonthBalance.toStringAsFixed(2)} €', style: endBalanceAmountStyle),
+              Text('${balanceProvider.endMonthBalance.toStringAsFixed(2)} €', style: s.endBalanceAmountStyle),
               const SizedBox(height: 2),
               ElevatedButton(
                 onPressed: () {
-                  // Aggiorna (esempi: dopo inserimento, avvio pagina)
                   balanceProvider.loadTransactionsAndBalance();
                 },
                 child: const Text('Aggiorna saldo'),
               ),
-       /*       Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: plusDecoration,
-                child: Text('+4,89%', style: percentStyle),
-              ),
-        */    ],
+            ],
           ),
           const Icon(Icons.account_balance_wallet_outlined, size: 32),
         ],

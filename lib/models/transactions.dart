@@ -83,4 +83,36 @@ class Transactions {
       recurringCount: map['recurringCount'],
     );
   }
+
+  Transactions copyWith({
+    int? id,
+    String? name,
+    double? amount,
+    String? category,
+    List<String>? tags,
+    bool? isEntry,
+    DateTime? date,
+    String? note,
+    bool? isRecurring,
+    String? recurringFrequency,
+    DateTime? recurringStart,
+    DateTime? recurringEnd,
+    int? recurringCount,
+  }) {
+    return Transactions(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      amount: amount ?? this.amount,
+      category: category ?? this.category,
+      tags: tags ?? this.tags,
+      isEntry: isEntry ?? this.isEntry,
+      date: date ?? this.date,
+      note: note ?? this.note,
+      isRecurring: isRecurring ?? this.isRecurring,
+      recurringFrequency: recurringFrequency ?? this.recurringFrequency,
+      recurringStart: recurringStart ?? this.recurringStart,
+      recurringEnd: recurringEnd ?? this.recurringEnd,
+      recurringCount: recurringCount ?? this.recurringCount,
+    );
+  }
 }

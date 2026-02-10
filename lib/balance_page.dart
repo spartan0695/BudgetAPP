@@ -20,6 +20,7 @@ import 'services/premium_service.dart';
 import 'package:provider/provider.dart';
 import 'providers/balance_provider.dart';
 
+
 class BalancePage extends StatelessWidget{
     const BalancePage({super.key});
     
@@ -30,110 +31,103 @@ class BalancePage extends StatelessWidget{
       final isPremium = PremiumService().isPremium;
       
       final transactions = context.watch<BalanceProvider>().transactions;
-        return Scaffold(
-            appBar: AppBar(),
-            body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BalanceCard(), // 🔥 AGGIUNTA: card bilancio totale
-            const SizedBox(height: 16), // 🔥 AGGIUNTA: spazio dopo la card
-            AddButtonsMenu(
-              onAddEntry: () => showAddEntryPopup(
-                context: context,
-                titolo: 'Nuova Entrata',
-                colorePrimario: Colors.green,
-                textButton: 'Aggiungi Entrata',
-                isEntry: true,),
-              onAddExpense: () => showAddEntryPopup(
-                context: context,
-                titolo: 'Nuova Uscita',
-                colorePrimario: Colors.red,
-                textButton: 'Aggiungi Uscita',
-                isEntry: false,),
-            ),
-            const SizedBox(height: 16), // 🔥 AGGIUNTA: spazio dopo la card
-
-            Expanded(
-            child: ListView.builder(
-              itemCount: transactions.length,
-              itemBuilder: (context, index) {
-                final t = transactions[index];
-
-                return Dismissible(
-                  key: ValueKey(t.id), // Usa id univoco
-                  direction: DismissDirection.endToStart, // swipe da destra a sinistra
-                  background: Container(
-                    color: const Color.fromARGB(255, 237, 102, 93), // sfondo rosso quando swipi
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: const Icon(Icons.delete, color: Colors.white),
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BalanceCard(),
+                const SizedBox(height: 16),
+                AddButtonsMenu(
+                  onAddEntry: () => showAddEntryPopup(
+                    context: context,
+                    titolo: 'Nuova Entrata',
+                    colorePrimario: Colors.green,
+                    textButton: 'Aggiungi Entrata',
+                    isEntry: true,
                   ),
-                  confirmDismiss: (direction) async {
-                    return await showDialog(
-                      context: context,
-                      builder: (ctx) => AlertDialog(
-                        title: const Text('Conferma cancellazione'),
-                        content: const Text('Vuoi cancellare questa transazione?'),
-                        actions: [
-                          TextButton(
-                            child: const Text('No'),
-                            onPressed: () => Navigator.of(ctx).pop(false),
-                          ),
-                          TextButton(
-                            child: const Text('Sì'),
-                            onPressed: () => Navigator.of(ctx).pop(true),
-                          ),
-                        ],
+                  onAddExpense: () => showAddEntryPopup(
+                    context: context,
+                    titolo: 'Nuova Uscita',
+                    colorePrimario: Colors.red,
+                    textButton: 'Aggiungi Uscita',
+                    isEntry: false,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: transactions.length,
+                  itemBuilder: (context, index) {
+                    final t = transactions[index];
+                    return Dismissible(
+                      key: ValueKey(t.id),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        color: const Color.fromARGB(255, 237, 102, 93),
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: const Icon(Icons.delete, color: Colors.white),
                       ),
+                      confirmDismiss: (direction) async {
+                        return await showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: const Text('Conferma cancellazione'),
+                            content: const Text('Vuoi cancellare questa transazione?'),
+                            actions: [
+                              TextButton(
+                                child: const Text('No'),
+                                onPressed: () => Navigator.of(ctx).pop(false),
+                              ),
+                              TextButton(
+                                child: const Text('Sì'),
+                                onPressed: () => Navigator.of(ctx).pop(true),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      onDismissed: (direction) async {
+                        final provider = Provider.of<BalanceProvider>(context, listen: false);
+                        await provider.deleteTransaction(t.id!);
+                        await provider.loadTransactionsAndBalance();
+                      },
+                      child: TransRecord(transactions: t),
                     );
                   },
-                  onDismissed: (direction) async {
-                    // Cancella dal database
-                    final provider = Provider.of<BalanceProvider>(context, listen: false);
-                    await provider.deleteTransaction(t.id!);
-                    await provider.loadTransactionsAndBalance(); // Ricarica tutto dal DB
-                  },
-                  child: TransRecord(transactions: t,
-                    
-                  ),
-                );
-              },
-            ),
-            ),
-
-
-
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-      children:[
-              PremiumBadge(
-                  isPremium: isPremium,
-                onFeatureTap: () => Navigator.pushNamed(context, '/advanced'),
-                onUpgradeRequested: () {
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => PaywallDialog(
-                      onShowPremiumPage: () {
-                        Navigator.pushNamed(context, '/premium');
-                      },
-                    ),
-                  );
-                },
-                child: ElevatedButton(
-                  onPressed: null,
-                  child: const Text('Funzionalità avanzata'),
                 ),
-              )
-              ],),
-            const SizedBox(height: 16), // 🔥 AGGIUNTA: spazio dopo la card
-          ],
-        ),
-      ),
-      
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    PremiumBadge(
+                      isPremium: isPremium,
+                      onFeatureTap: () => Navigator.pushNamed(context, '/advanced'),
+                      onUpgradeRequested: () {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => PaywallDialog(
+                            onShowPremiumPage: () {
+                              Navigator.pushNamed(context, '/premium');
+                            },
+                          ),
+                        );
+                      },
+                      child: ElevatedButton(
+                        onPressed: null,
+                        child: const Text('Funzionalità avanzata'),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
+          ),
         );
     }
 }

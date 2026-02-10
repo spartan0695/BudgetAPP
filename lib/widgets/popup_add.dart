@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../transaction_controller.dart';
 import '../widgets/date_picker.dart'; // importa il tuo nuovo widget
 import '../styles.dart';
+import 'package:provider/provider.dart';
+import '../providers/balance_provider.dart';
 
 class MovimentoPopup extends StatefulWidget {
   final String titolo;
@@ -134,16 +136,28 @@ class _MovimentoPopupState extends State<MovimentoPopup> {
                     ricEnd: ricEnd,
                   );
 
+                  final balanceProvider = Provider.of<BalanceProvider>(context, listen: false);
+
+                  if (isRicorrente && periodicita != null && ricStart != null && ricEnd != null) {
+                    await balanceProvider.addTransactionRicorrente(
+                      trx,
+                      periodicita!,
+                      ricStart ?? DateTime.now(),
+                      ricEnd ?? DateTime.now().add(Duration(days: 30)),
+                    );
+                  } else {
+                    await balanceProvider.addTransaction(trx);
+                  }
                   print('TRANSACTION DA INSERIRE: ${trx.toMap()}');
-                  await widget.controller.addTransaction(trx);
+                  //await widget.controller.addTransaction(trx);
                   print('INSERITO IN DB');
                   Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: widget.isEntry ? Colors.green : Colors.red,
+                  backgroundColor: widget.isEntry ? appStyles(context).entryColor : appStyles(context).expenseColor,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: Text(widget.textButton, style: buttonText),
+                child: Text(widget.textButton, style: appStyles(context).buttonText),
               ),
             ),
           ],

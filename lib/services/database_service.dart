@@ -59,6 +59,16 @@ class DatabaseService {
                             whereArgs: [id]);
   }
 
+  Future<int> updateTransaction(Transactions trx) async {
+    final db = await database;
+    return await db.update(
+      'transactions',
+      trx.toMap(),
+      where: 'id = ?',
+      whereArgs: [trx.id],
+    );
+  }
+
 
   Future<List<Transactions>> getAllTransactions() async {
     final db = await database;
